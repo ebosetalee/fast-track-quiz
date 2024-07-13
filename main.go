@@ -18,8 +18,11 @@ func Main() {
 	var mux = http.NewServeMux()
 
 	// http methods
-	mux.HandleFunc("/questions", getAllQuestions)
+	mux.HandleFunc("/quiz/questions", getAllQuestions)
+
 	mux.HandleFunc("/quiz/{id}", getQuestion)
+
+	mux.HandleFunc("/quiz/{id}/answer", answerQuestion)
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", port),
@@ -30,9 +33,7 @@ func Main() {
 
 	log.Printf("Server started on port %s\n", port)
 
-	err := srv.ListenAndServe()
-	if err != nil {
+	if err := srv.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
 }
-

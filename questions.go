@@ -18,6 +18,10 @@ type QuizStruct struct {
 	Questions []Question
 }
 
+type UserAnswer struct {
+	ChosenAnswer string `json:"answer" valid:"required~please provide an answer"`
+}
+
 func (q *QuizStruct) sort() *QuizStruct {
 	sort.SliceStable(q.Questions, func(i int, j int) bool {
 		return q.Questions[i].index < q.Questions[j].index
@@ -33,6 +37,13 @@ func (q *QuizStruct) getQuestion(index int) *Question {
 		}
 	}
 	return nil
+}
+
+func (q *Question) checkAnswer(answer string) string {
+	if q.correctAnswer == answer {
+		return "Correct"
+	}
+	return "Wrong"
 }
 
 var Quiz = QuizStruct{
