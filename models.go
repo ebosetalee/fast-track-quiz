@@ -15,7 +15,6 @@ type Database struct {
 	mu    *sync.Mutex
 }
 
-
 type Response struct {
 	Error   string `json:"error,omitempty"`
 	Message string `json:"message,omitempty"`
@@ -67,9 +66,23 @@ func (d *Database) addScore(userId string) {
 	score := d.Users[userId].Score + 1
 
 	d.Users[userId] = User{
-		Id: userId,
+		Id:    userId,
 		Score: score,
 	}
+}
+
+func (d *Database) sortByScore() []User {
+	allUsers := make([]User, 0)
+
+	for _, user := range d.Users {
+		allUsers = append(allUsers, user)
+	}
+
+	sort.SliceStable(allUsers, func(i int, j int) bool {
+		return allUsers[i].Score > allUsers[j].Score
+	})
+
+	return allUsers
 }
 
 func (q *QuizStruct) sort() *QuizStruct {

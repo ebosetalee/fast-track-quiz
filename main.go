@@ -28,6 +28,8 @@ func Main() {
 
 	mux.HandleFunc("/quiz/user/register", registerUser(database))
 
+	mux.HandleFunc("/quiz/user/stats", checkStats(database))
+
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", port),
 		Handler:      mux,

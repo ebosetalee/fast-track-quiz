@@ -2,6 +2,7 @@ package quiz
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -102,3 +103,109 @@ func registerUser(db *Database) http.HandlerFunc {
 	}
 }
 
+func checkStats(db *Database) http.HandlerFunc {
+	return func(wri http.ResponseWriter, req *http.Request) {
+		wri.Header().Set("Content-Type", "application/json")
+
+		if req.Method != http.MethodGet {
+			wri.WriteHeader(http.StatusMethodNotAllowed)
+
+			response := Response{
+				Error: "Whoops! Route Method Wrong.",
+			}
+
+			res, err := json.Marshal(response)
+			if err != nil {
+				log.Println("Failed Conversion", err)
+
+			}
+
+			_, err = wri.Write(res)
+			if err != nil {
+				log.Println("failed to writes response header", err)
+			}
+
+			return
+		}
+
+		userIDHeader, ok := req.Header[http.CanonicalHeaderKey("x-quiz-userId")]
+		if !ok {
+			wri.WriteHeader(http.StatusNotFound)
+
+			// return an error
+			response := Response{
+				Error: "No Auth provided",
+			}
+
+			res, err := json.Marshal(response)
+			if err != nil {
+				log.Println("Failed Conversion", err)
+			}
+
+			_, err = wri.Write(res)
+			if err != nil {
+				log.Println("failed to writes response header", err)
+			}
+			return
+		}
+
+		userId := userIDHeader[0]
+
+		// check user exists
+		_, ok = db.Users[userId]
+		if !ok {
+			wri.WriteHeader(http.StatusNotFound)
+
+			// return an error
+			response := Response{
+				Error: "User does not exist",
+			}
+
+			res, err := json.Marshal(response)
+			if err != nil {
+				log.Println("Failed Conversion", err)
+			}
+
+			_, err = wri.Write(res)
+			if err != nil {
+				log.Println("failed to writes response header", err)
+			}
+			return
+		}
+
+		// get user position
+		users := db.sortByScore()
+		var position int
+		var score int
+		for i := 0; i < len(users); i++ {
+			if users[i].Id == userId {
+				score = users[i].Score
+				position = i
+				break
+			}
+		}
+
+		// calculate user percentile
+		percentile := (len(users) - position) / len(users) * 100
+		fmt.Printf("User in %v percentile with %v users and score %v\n", percentile, len(users), score)
+
+		message := fmt.Sprintf("You were better than %d%% of all quizzers", percentile)
+
+		response := Response{
+			Message: "result retrieved successfully",
+			Data:    message,
+		}
+
+		res, err := json.Marshal(response)
+		if err != nil {
+			log.Println("Failed Conversion", err)
+
+		}
+
+		wri.WriteHeader(http.StatusOK)
+		_, err = wri.Write(res)
+		if err != nil {
+			log.Println("err writing bytes", err)
+		}
+	}
+}
