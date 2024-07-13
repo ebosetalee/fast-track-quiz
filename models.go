@@ -135,7 +135,7 @@ var Quiz = QuizStruct{
 			correctAnswer: "A",
 		},
 		{
-			index: 1,
+			index: 4,
 			Text:  "How many colors are in the rainbow?",
 			Answers: []answer{
 				{
@@ -156,6 +156,190 @@ var Quiz = QuizStruct{
 				},
 			},
 			correctAnswer: "C",
+		},
+		{
+			index: 1,
+			Text:  "Who was the Ancient Greek God of the Sun?",
+			Answers: []answer{
+				{
+					Index: "A",
+					Text:  "Athena",
+				},
+				{
+					Index: "B",
+					Text:  "Apollo",
+				},
+				{
+					Index: "C",
+					Text:  "Artemis",
+				},
+				{
+					Index: "D",
+					Text:  "Ares",
+				},
+			},
+			correctAnswer: "B",
+		},
+		{
+			index: 5,
+			Text:  "Which of these shapes has 7 sides?",
+			Answers: []answer{
+				{
+					Index: "A",
+					Text:  "Hexagon",
+				},
+				{
+					Index: "B",
+					Text:  "Pentagon",
+				},
+				{
+					Index: "C",
+					Text:  "Octagon",
+				},
+				{
+					Index: "D",
+					Text:  "Heptagon",
+				},
+			},
+			correctAnswer: "D",
+		},
+		{
+			index: 3,
+			Text:  `What city is known as "The Eternal City"?`,
+			Answers: []answer{
+				{
+					Index: "A",
+					Text:  "Athens",
+				},
+				{
+					Index: "B",
+					Text:  "Rome",
+				},
+				{
+					Index: "C",
+					Text:  "Imperial City",
+				},
+				{
+					Index: "D",
+					Text:  "Jerusalem",
+				},
+			},
+			correctAnswer: "B",
+		}, 
+		{
+			index: 6,
+			Text:  "Which of these countries is the most densely populated?",
+			Answers: []answer{
+				{
+					Index: "A",
+					Text:  "Ontario",
+				},
+				{
+					Index: "B",
+					Text:  "Singapore",
+				},
+				{
+					Index: "C",
+					Text:  "Monaco",
+				},
+				{
+					Index: "D",
+					Text:  "Hong Kong",
+				},
+			},
+			correctAnswer: "C",
+		},
+		{
+			index: 8,
+			Text:  "W'll Make a Man Out of You' is a song from which movie?",
+			Answers: []answer{
+				{
+					Index: "A",
+					Text:  "Pocahontas",
+				},
+				{
+					Index: "B",
+					Text:  "Mulan",
+				},
+				{
+					Index: "C",
+					Text:  "Brave",
+				},
+				{
+					Index: "D",
+					Text:  "Hong Kong",
+				},
+			},
+			correctAnswer: "B",
+		},
+		{
+			index: 7,
+			Text:  "Which of these countries is the most densely populated?",
+			Answers: []answer{
+				{
+					Index: "A",
+					Text:  "Monaco",
+				},
+				{
+					Index: "B",
+					Text:  "Ontario",
+				},
+				{
+					Index: "C",
+					Text:  "Singapore",
+				},
+				{
+					Index: "D",
+					Text:  "Hong Kong",
+				},
+			},
+			correctAnswer: "A",
+		},
+		{
+			index: 10,
+			Text:  "Where did sushi originate?",
+			Answers: []answer{
+				{
+					Index: "A",
+					Text:  "China",
+				},
+				{
+					Index: "B",
+					Text:  "Korea",
+				},
+				{
+					Index: "C",
+					Text:  "Japan",
+				},
+				{
+					Index: "D",
+					Text:  "Singapore",
+				},
+			},
+			correctAnswer: "A",
+		},
+		{
+			index: 9,
+			Text:  "Kratos is the main character of what video game series? ",
+			Answers: []answer{
+				{
+					Index: "A",
+					Text:  "BloodBorne",
+				},
+				{
+					Index: "B",
+					Text:  "Uncharted",
+				},
+				{
+					Index: "C",
+					Text:  "EldenRing",
+				},
+				{
+					Index: "D",
+					Text:  "God Of War",
+				},
+			},
+			correctAnswer: "D",
 		},
 	},
 }
