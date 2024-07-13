@@ -1,6 +1,26 @@
 package quiz
 
-import "sort"
+import (
+	"sort"
+	"sync"
+)
+
+type User struct {
+	Id    string
+	Score int
+}
+
+type Database struct {
+	Users map[string]User
+	mu    *sync.Mutex
+}
+
+
+type Response struct {
+	Error   string `json:"error,omitempty"`
+	Message string `json:"message,omitempty"`
+	Data    any    `json:"data,omitempty"`
+}
 
 type Question struct {
 	index         int
@@ -20,6 +40,36 @@ type QuizStruct struct {
 
 type UserAnswer struct {
 	ChosenAnswer string `json:"answer" valid:"required~please provide an answer"`
+}
+
+type UserRequest struct {
+	Id string `json:"Id" valid:"required~please provide an Id"`
+}
+
+func NewDatabase() *Database {
+	return &Database{
+		Users: make(map[string]User, 10),
+		mu:    &sync.Mutex{},
+	}
+}
+
+func (d *Database) register(user User) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+
+	d.Users[user.Id] = user
+}
+
+func (d *Database) addScore(userId string) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+
+	score := d.Users[userId].Score + 1
+
+	d.Users[userId] = User{
+		Id: userId,
+		Score: score,
+	}
 }
 
 func (q *QuizStruct) sort() *QuizStruct {

@@ -14,6 +14,8 @@ func Main() {
 		port = "8080"
 	}
 
+	database := NewDatabase()
+
 	// define handler
 	var mux = http.NewServeMux()
 
@@ -22,7 +24,9 @@ func Main() {
 
 	mux.HandleFunc("/quiz/{id}", getQuestion)
 
-	mux.HandleFunc("/quiz/{id}/answer", answerQuestion)
+	mux.HandleFunc("/quiz/{id}/answer", answerQuestion(database))
+
+	mux.HandleFunc("/quiz/user/register", registerUser(database))
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", port),
