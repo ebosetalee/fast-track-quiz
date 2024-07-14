@@ -12,6 +12,7 @@ import (
 )
 
 var quizBucket string = "QuizBucket"
+var fileName = "/tmp/quiz-users.db"
 
 type CLI struct {
 	baseURL string
@@ -19,12 +20,11 @@ type CLI struct {
 }
 
 func NewCLI(baseURL string) (*CLI, error) {
-	fileName := "/tmp/quiz-users.db"
 	db, err := bolt.Open(fileName, 0666, nil)
 	if err != nil {
 		return nil, err
 	}
-	defer db.Close()
+	// we don't close here because we need the db open to perform operations
 
 	err = db.Update(func(tx *bolt.Tx) error {
 		// Create a bucket.
@@ -88,13 +88,13 @@ func (c *CLI) Register(userId string) error {
 		if b == nil {
 			return errors.New("bucket does not exist")
 		}
-		err := b.Put([]byte(userId), []byte("0"))
+		err := b.Put([]byte(userId), []byte("1"))
 		return err
 	})
 
 	fmt.Println("Response written to file successfully")
 
-	return nil
+	return c.db.Close()
 }
 
 func (c *CLI) Questions() error {
@@ -131,5 +131,59 @@ func (c *CLI) Questions() error {
 
 	fmt.Println(string(result))
 
-	return nil
+	return c.db.Close()
+}
+
+func (c *CLI) Start(userId string) error {
+	var position []byte
+	err := c.db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(quizBucket))
+		if b == nil {
+			return errors.New("bucket does not exist")
+		}
+		position = b.Get([]byte(userId))
+
+		if position == nil {
+			return errors.New("user not found")
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+
+	url := fmt.Sprintf("%s/quiz/%s", c.baseURL, string(position))
+
+	client := &http.Client{}
+
+	res, err := client.Get(url)
+	if err != nil {
+		return err
+	}
+
+	defer res.Body.Close()
+
+	respBody, err := io.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	var response Response
+	err = json.Unmarshal(respBody, &response)
+	if err != nil {
+		return err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return errors.New(response.Error)
+	}
+
+	result, err := json.MarshalIndent(response, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(string(result))
+
+	return c.db.Close()
 }
