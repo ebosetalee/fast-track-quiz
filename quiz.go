@@ -4,15 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"time"
 )
 
-func Main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
+func Main(port int64) {
 
 	database := NewDatabase()
 
@@ -31,13 +26,13 @@ func Main() {
 	mux.HandleFunc("/quiz/user/stats", checkStats(database))
 
 	srv := &http.Server{
-		Addr:         fmt.Sprintf(":%s", port),
+		Addr:         fmt.Sprintf(":%d", port),
 		Handler:      mux,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
 
-	log.Printf("Server started on port %s\n", port)
+	log.Printf("Server started on port %d\n", port)
 
 	if err := srv.ListenAndServe(); err != nil {
 		log.Fatal(err)

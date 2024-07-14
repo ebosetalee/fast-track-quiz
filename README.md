@@ -18,3 +18,9 @@ CLI that talks with the API, preferably using https://github.com/spf13/cobra ;( 
 3. User should be able to answer all the questions and then post his/hers answers and get back how many correct answers they had, displayed to the user.
 
 4. User should see how well they compared to others that have taken the quiz, eg. "You were better than 60% of all quizzers"
+
+
+### BUILDING THE BINARY
+```
+go build -o quiz ./cmd
+```
