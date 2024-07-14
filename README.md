@@ -24,3 +24,15 @@ CLI that talks with the API, preferably using https://github.com/spf13/cobra ;( 
 ```
 go build -o quiz ./cmd
 ```
+
+#### CLI commands
+
+``` shell
+quiz server
+quiz cli
+quiz cli register # save user progress to local file
+quiz cli questions
+quiz cli  start # start continues from where I left off
+quiz cli answer -q 1 -a A
+quiz cli stats
+```

@@ -320,7 +320,7 @@ var Quiz = QuizStruct{
 		},
 		{
 			index: 9,
-			Text:  "Kratos is the main character of what video game series? ",
+			Text:  "Kratos is the main character of what video game series?",
 			Answers: []answer{
 				{
 					Index: "A",
