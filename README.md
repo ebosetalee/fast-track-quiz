@@ -32,7 +32,7 @@ quiz server
 quiz cli
 quiz cli register # save user progress to local file
 quiz cli questions
-quiz cli  start # start continues from where I left off
-quiz cli answer -q 1 -a A
+quiz cli  start # start or continues from where I left off
+quiz cli answer -a A
 quiz cli stats
 ```
