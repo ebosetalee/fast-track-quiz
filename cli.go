@@ -72,7 +72,7 @@ func (c *CLI) Register(userId string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("%+v\n", string(respBody))
+	// fmt.Printf("%+v\n", string(respBody))
 
 	var response Response
 	err = json.Unmarshal(respBody, &response)
@@ -84,6 +84,13 @@ func (c *CLI) Register(userId string) error {
 		return errors.New(response.Error)
 	}
 
+	result, err := json.MarshalIndent(response, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(string(result))
+
 	c.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(quizBucket))
 		if b == nil {
@@ -92,8 +99,6 @@ func (c *CLI) Register(userId string) error {
 		err := b.Put([]byte(userId), []byte("1"))
 		return err
 	})
-
-	fmt.Println("Response written to file successfully")
 
 	return c.db.Close()
 }
@@ -271,6 +276,44 @@ func (c *CLI) Answer(userId string, answer string) error {
 		err := b.Put([]byte(userId), []byte((string(currPos))))
 		return err
 	})
+
+	return c.db.Close()
+}
+
+func (c *CLI) Statistics(userId string) error {
+	url := fmt.Sprintf("%s/quiz/user/stats", c.baseURL)
+
+	client := &http.Client{}
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("x-quiz-userId", userId)
+
+	res, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	respBody, err := io.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	var response Response
+	err = json.Unmarshal(respBody, &response)
+	if err != nil {
+		return err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return errors.New(response.Error)
+	}
+
+	fmt.Println(response.Data)
 
 	return c.db.Close()
 }
