@@ -99,12 +99,7 @@ func (c *CLI) Register(userId string) error {
 		return errors.New(response.Error)
 	}
 
-	result, err := json.MarshalIndent(response, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	fmt.Println(string(result))
+	fmt.Println("Welcome!", userId)
 
 	c.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(quizBucket))
