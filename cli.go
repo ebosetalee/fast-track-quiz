@@ -20,6 +20,21 @@ type CLI struct {
 	db      *bolt.DB
 }
 
+func (q *Question) string(d Question, number string) string {
+	question := d.Text
+	answers := d.Answers
+
+	res := fmt.Sprintf("%v: %v\n", number, question)
+
+	for i := 0; i < len(answers); i++ {
+		res += fmt.Sprintf("%v: %v", answers[i].Index, answers[i].Text)
+		if i+1 != len(answers) {
+			res += "\n"
+		}
+	}
+	return res
+}
+
 func NewCLI(baseURL string) (*CLI, error) {
 	db, err := bolt.Open(fileName, 0666, nil)
 	if err != nil {
@@ -158,7 +173,7 @@ func (c *CLI) Start(userId string) error {
 		return err
 	}
 
-	url := fmt.Sprintf("%s/quiz/%s", c.baseURL, string(position))
+	url := fmt.Sprintf("%s/quiz/%v", c.baseURL, string(position))
 
 	client := &http.Client{}
 
@@ -184,12 +199,20 @@ func (c *CLI) Start(userId string) error {
 		return errors.New(response.Error)
 	}
 
-	result, err := json.MarshalIndent(response, "", "  ")
+	dataResponse, err := json.Marshal(response.Data)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println(string(result))
+	var question Question
+	err = json.Unmarshal(dataResponse, &question)
+	if err != nil {
+		return err
+	}
+
+	result := question.string(question, string(position))
+
+	fmt.Println(result)
 
 	return c.db.Close()
 }
@@ -253,12 +276,7 @@ func (c *CLI) Answer(userId string, answer string) error {
 		return errors.New(response.Error)
 	}
 
-	result, err := json.MarshalIndent(response, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	fmt.Println(string(result))
+	fmt.Println(response.Data)
 
 	// convert position from byte to int
 	posInt, err := strconv.Atoi(string(position))
@@ -267,13 +285,15 @@ func (c *CLI) Answer(userId string, answer string) error {
 	}
 
 	currPos := posInt + 1
-	
+
 	c.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(quizBucket))
 		if b == nil {
 			return errors.New("bucket does not exist")
 		}
-		err := b.Put([]byte(userId), []byte((string(currPos))))
+
+		currPosStr := strconv.Itoa(currPos)
+		err := b.Put([]byte(userId), []byte(currPosStr))
 		return err
 	})
 
