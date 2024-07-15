@@ -186,10 +186,11 @@ func checkStats(db *Database) http.HandlerFunc {
 		}
 
 		// calculate user percentile
-		percentile := (len(users) - position) / len(users) * 100
-		fmt.Printf("User in %v percentile with %v users and score %v\n", percentile, len(users), score)
+		percentile := float32(len(users)-position) / float32(len(users)) * 100
 
-		message := fmt.Sprintf("You were better than %d%% of all quizzers", percentile)
+		fmt.Printf("User is in %.0f percentile with %v users, position %v and score %v\n", percentile, len(users), position, score)
+
+		message := fmt.Sprintf("You were better than %.0f%% of all quizzers", percentile)
 
 		response := Response{
 			Message: "result retrieved successfully",
