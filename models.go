@@ -251,7 +251,7 @@ var Quiz = QuizStruct{
 		},
 		{
 			index: 8,
-			Text:  "W'll Make a Man Out of You' is a song from which movie?",
+			Text:  "I'll Make a Man Out of You' is a song from which movie?",
 			Answers: []answer{
 				{
 					Index: "A",
@@ -274,23 +274,23 @@ var Quiz = QuizStruct{
 		},
 		{
 			index: 7,
-			Text:  "Which of these countries is the most densely populated?",
+			Text:  "What country is Cognac from?",
 			Answers: []answer{
 				{
 					Index: "A",
-					Text:  "Monaco",
+					Text:  "France",
 				},
 				{
 					Index: "B",
-					Text:  "Ontario",
+					Text:  "Spain",
 				},
 				{
 					Index: "C",
-					Text:  "Singapore",
+					Text:  "Russia",
 				},
 				{
 					Index: "D",
-					Text:  "Hong Kong",
+					Text:  "Italy",
 				},
 			},
 			correctAnswer: "A",
@@ -332,7 +332,7 @@ var Quiz = QuizStruct{
 				},
 				{
 					Index: "C",
-					Text:  "EldenRing",
+					Text:  "Elden Ring",
 				},
 				{
 					Index: "D",
