@@ -1,14 +1,14 @@
 # QUIZ
 
-This is a simple quiz about "   " with a few questions and a few alternatives for each question. Each with one correct answer. 
+This simple quiz features 10 diverse questions, each with multiple-choice options. Sharpen your wits, choose the correct answer from the provided alternatives, and see how your score compares to others. 
 
 ### Preferred Stack:
 Backend - Golang
 Database - Just in-memory, so no database 
 
 ### Preferred Components: 
-REST API or gRPC
-CLI that talks with the API, preferably using https://github.com/spf13/cobra ;( as CLI framework )
+1. REST API or gRPC
+2. CLI that talks with the API, preferably using [spf13/cobra](https://github.com/spf13/cobra); (as CLI framework)
 
 ### User stories/Use cases: 
 1. User should be able to get questions with a number of answers
@@ -28,11 +28,11 @@ go build -o quiz ./cmd
 #### CLI commands
 
 ``` shell
-quiz server
-quiz cli
-quiz cli register # save user progress to local file
-quiz cli questions
+quiz server # To start the api server
+quiz cli # To view usage and various commands
+quiz cli register # save user progress to local db
+quiz cli questions # view all questions
 quiz cli  start # start or continues from where I left off
-quiz cli answer -a A
-quiz cli stats
+quiz cli answer -a A  # answer question by choosing option "A"
+quiz cli stats # Result statistics
 ```

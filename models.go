@@ -232,7 +232,7 @@ var Quiz = QuizStruct{
 			Answers: []answer{
 				{
 					Index: "A",
-					Text:  "Ontario",
+					Text:  "Canada",
 				},
 				{
 					Index: "B",
@@ -267,7 +267,7 @@ var Quiz = QuizStruct{
 				},
 				{
 					Index: "D",
-					Text:  "Hong Kong",
+					Text:  "Tangled",
 				},
 			},
 			correctAnswer: "B",

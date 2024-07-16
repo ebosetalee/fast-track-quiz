@@ -168,6 +168,16 @@ func (c *CLI) Start(userId string) error {
 		return err
 	}
 
+	posInt, err := strconv.Atoi(string(position))
+	if err != nil {
+		return err
+	}
+
+	if posInt > 10 {
+		fmt.Println("That's all the questions...check your stats")
+		return c.db.Close()
+	}
+
 	url := fmt.Sprintf("%s/quiz/%v", c.baseURL, string(position))
 
 	client := &http.Client{}
@@ -239,6 +249,17 @@ func (c *CLI) Answer(userId string, answer string) error {
 		return err
 	}
 
+	// convert position from byte to int
+	posInt, err := strconv.Atoi(string(position))
+	if err != nil {
+		return err
+	}
+
+	if posInt > 10 {
+		fmt.Println("You've answered all the questions")
+		return c.db.Close()
+	}
+
 	url := fmt.Sprintf("%s/quiz/%s/answer", c.baseURL, string(position))
 
 	client := &http.Client{}
@@ -273,11 +294,6 @@ func (c *CLI) Answer(userId string, answer string) error {
 
 	fmt.Println(response.Data)
 
-	// convert position from byte to int
-	posInt, err := strconv.Atoi(string(position))
-	if err != nil {
-		return err
-	}
 
 	currPos := posInt + 1
 
@@ -291,6 +307,11 @@ func (c *CLI) Answer(userId string, answer string) error {
 		err := b.Put([]byte(userId), []byte(currPosStr))
 		return err
 	})
+
+
+	if currPos > 10 {
+		fmt.Println("\nCongratulations!!🎉🎉 \n You have completed the questions.\nKindly check your stats...")
+	}
 
 	return c.db.Close()
 }
