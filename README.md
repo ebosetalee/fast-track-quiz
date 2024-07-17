@@ -37,5 +37,9 @@ quiz cli answer -a A  # answer question by choosing option "A"
 quiz cli stats # Result statistics
 ```
 
+## API Documentation
+
+The Postman API documentation can be found at [Fast Track Quiz](https://documenter.getpostman.com/view/24670510/2sA3kRL4o4)
+
 #### IMPROVEMENTS
 - Add test cases
