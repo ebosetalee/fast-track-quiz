@@ -32,7 +32,10 @@ quiz server # To start the api server
 quiz cli # To view usage and various commands
 quiz cli register # save user progress to local db
 quiz cli questions # view all questions
-quiz cli  start # start or continues from where I left off
+quiz cli start # start or continues from where I left off
 quiz cli answer -a A  # answer question by choosing option "A"
 quiz cli stats # Result statistics
 ```
+
+#### IMPROVEMENTS
+- Add test cases
